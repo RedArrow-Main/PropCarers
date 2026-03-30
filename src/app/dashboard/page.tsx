@@ -69,6 +69,18 @@ export default function DashboardPage() {
           font-family: var(--font-josefin-sans), 'Josefin Sans', sans-serif;
         }
 
+        @media (max-width: 639px) {
+          .dash-root {
+            height: auto;
+            min-height: 100vh;
+            overflow: visible;
+          }
+          .dash-right {
+            height: auto;
+            overflow: visible;
+          }
+        }
+
         /* ── Right Panel ── */
         .dash-right {
           flex: 1;
@@ -570,18 +582,42 @@ export default function DashboardPage() {
         }
 
         @media (max-width: 640px) {
-          .dash-header   { padding: 14px 20px 5px; }
-          .dash-content  { padding: 0 20px 24px; }
-          .dash-divider  { margin: 8px 16px; }
-          .overview-body { flex-direction: column; }
-          .stats-area    { flex-direction: row; min-width: unset; }
-          .prop-carousel { grid-template-columns: repeat(2, 1fr); }
-          .dash-breadcrumb { font-size: 18px; width: auto; height: auto; }
-          .dash-breadcrumb span { font-size: 18px; }
+          /* On mobile, sidebar is gone (bottom nav), so no left offset needed */
+          .dash-root     { padding-bottom: 64px; } /* space for bottom nav */
+          .dash-header   { padding: 14px 16px 5px; }
+          .dash-content  { padding: 0 14px 24px; }
+          .dash-divider  { margin: 8px 14px; }
+
+          /* Overview card */
+          .overview-card  { padding: 16px; min-height: unset; }
+          .overview-body  { flex-direction: column; }
+          .chart-total    { font-size: 18px; }
+          .chart-subtitle { margin-bottom: 12px; }
+          .chart-with-axis { min-height: 120px; }
+          .bar-col        { height: 120px; }
+
+          /* Stats row — side by side on mobile */
+          .stats-area     { flex-direction: row; width: 100%; min-width: unset; border-radius: 10px; }
+          .stat-card      { padding: 12px; gap: 8px; flex-direction: column; align-items: flex-start; }
+          .stat-value     { font-size: 15px; }
+          .stat-sub       { font-size: 9px; }
+
+          /* Property cards */
+          .prop-carousel  { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+          .prop-img-wrap  { padding-bottom: 75%; }
+          .prop-price-badge { font-size: 12px; padding: 7px 14px; }
+          .prop-name      { font-size: 11px; }
+          .prop-rent      { font-size: 12px; }
+          .prop-view-btn  { width: 110px; height: 30px; font-size: 11px; margin-top: 12px; }
+
+          /* Header */
+          .dash-breadcrumb { font-size: 16px; width: auto; height: auto; }
+          .dash-breadcrumb span { font-size: 16px; }
         }
 
         @media (max-width: 400px) {
           .prop-carousel { grid-template-columns: 1fr; }
+          .stats-area    { flex-direction: column; }
         }
       `}</style>
 

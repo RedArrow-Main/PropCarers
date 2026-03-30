@@ -314,6 +314,42 @@ export default function RentIncomeReportPage() {
           cursor: not-allowed;
         }
 
+        /* ── Mobile table-to-cards ── */
+        .report-table-mobile { display: none; }
+        .report-table-desktop { display: block; }
+
+        @media (max-width: 639px) {
+          /* Root / layout */
+          .report-root        { height: auto; min-height: 100vh; overflow: visible; padding-bottom: 64px; }
+          .report-right       { height: auto; overflow: visible; }
+          .report-header      { padding: 12px 16px 5px; }
+          .report-breadcrumb  { font-size: 14px; }
+          .report-divider     { margin: 6px 14px; }
+          .report-card        { margin: 0 12px 16px; border-radius: 12px; flex: none; }
+          .report-card-content { padding: 14px; }
+
+          /* Top section: stack vertically */
+          .report-top-section       { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+          .report-select-months     { flex-wrap: wrap; gap: 8px; }
+          .report-months-label      { font-size: 12px; }
+          .report-month-dropdown    { font-size: 11px; padding: 5px 8px; }
+
+          /* Heading row: stack */
+          .report-heading-row   { flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 14px; }
+          .report-heading-title { font-size: 14px; }
+          .report-download-btn  { width: 100%; justify-content: center; }
+
+          /* Property info: stack vertically */
+          .report-property-info { flex-direction: column; gap: 6px; padding: 10px 0; }
+
+          /* Table visibility toggle */
+          .report-table-desktop { display: none; }
+          .report-table-mobile  { display: flex; flex-direction: column; gap: 10px; }
+
+          /* Footer */
+          .report-footer        { padding: 10px 14px; flex-direction: column; align-items: flex-start; gap: 8px; }
+        }
+
         @media (min-width: 640px) {
           .report-header { padding: 16px 40px 5px; }
           .report-card { margin: 0 44px 44px; }
@@ -428,8 +464,8 @@ export default function RentIncomeReportPage() {
                 </div>
               </div>
 
-              {/* Table */}
-              <div className="report-table-wrapper">
+              {/* ── Desktop Table ── */}
+              <div className="report-table-wrapper report-table-desktop">
                 <table className="report-table">
                   <thead>
                     <tr>
@@ -460,13 +496,7 @@ export default function RentIncomeReportPage() {
                           <td>{trans.deposited.toLocaleString()}</td>
                           <td style={{ textAlign: "center" }}>
                             <div className="report-pdf-icon">
-                              <Image
-                                src="/PdfRen.png"
-                                alt="PDF"
-                                width={14}
-                                height={14}
-                                style={{ objectFit: "contain" }}
-                              />
+                              <Image src="/PdfRen.png" alt="PDF" width={14} height={14} style={{ objectFit: "contain" }} />
                             </div>
                           </td>
                         </tr>
@@ -474,6 +504,71 @@ export default function RentIncomeReportPage() {
                     )}
                   </tbody>
                 </table>
+              </div>
+
+              {/* ── Mobile Cards (replaces table on small screens) ── */}
+              <div className="report-table-mobile">
+                {paginatedTransactions.length === 0 ? (
+                  <div style={{ textAlign: "center", padding: "32px 0", color: "#AAAAAA", fontSize: "14px" }}>
+                    No transactions found
+                  </div>
+                ) : (
+                  paginatedTransactions.map((trans) => (
+                    <div key={trans.invoice} style={{
+                      backgroundColor: "#F8F9FF",
+                      borderRadius: "10px",
+                      padding: "12px 14px",
+                      border: "1px solid #E8EAF0",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "8px",
+                    }}>
+                      {/* Top row: Invoice + PDF icon */}
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <span style={{ fontWeight: 700, fontSize: "12px", color: "#1B3F7E" }}>{trans.invoice}</span>
+                        <div style={{ display: "flex", alignItems: "center", gap: "4px", cursor: "pointer" }}>
+                          <Image src="/PdfRen.png" alt="PDF" width={16} height={16} style={{ objectFit: "contain" }} />
+                          <span style={{ fontSize: "10px", color: "#FE7A42", fontWeight: 600 }}>PDF</span>
+                        </div>
+                      </div>
+
+                      {/* Month + Bank */}
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <span style={{ fontSize: "11px", color: "#666" }}>
+                          <span style={{ fontWeight: 600, color: "#333" }}>Month: </span>{trans.month}
+                        </span>
+                        <span style={{ fontSize: "10px", color: "#888", textAlign: "right", maxWidth: "55%" }}>
+                          {trans.bankAccount}
+                        </span>
+                      </div>
+
+                      {/* Divider */}
+                      <div style={{ height: "1px", backgroundColor: "#E0E0E0" }} />
+
+                      {/* Amounts row */}
+                      <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                          <span style={{ fontSize: "9px", color: "#999", fontWeight: 600, textTransform: "uppercase" }}>Total Rent</span>
+                          <span style={{ fontSize: "13px", fontWeight: 700, color: "#222" }}>
+                            PKR {trans.totalRent.toLocaleString()}
+                          </span>
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "2px", alignItems: "center" }}>
+                          <span style={{ fontSize: "9px", color: "#999", fontWeight: 600, textTransform: "uppercase" }}>Charges</span>
+                          <span style={{ fontSize: "13px", fontWeight: 700, color: "#FE7A42" }}>
+                            {trans.serviceCharges.toLocaleString()}
+                          </span>
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "2px", alignItems: "flex-end" }}>
+                          <span style={{ fontSize: "9px", color: "#999", fontWeight: 600, textTransform: "uppercase" }}>Deposited</span>
+                          <span style={{ fontSize: "13px", fontWeight: 700, color: "#4CAF50" }}>
+                            {trans.deposited.toLocaleString()}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
 

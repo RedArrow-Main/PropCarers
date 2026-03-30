@@ -119,6 +119,10 @@ export default function Dashboard() {
       <style>{`
         .dash-root { display: flex; height: 100vh; overflow: hidden; background-color: #F0F0F0; font-family: var(--font-josefin-sans), sans-serif; }
         .dash-right { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+        @media (max-width: 639px) {
+          .dash-root  { height: auto; min-height: 100vh; overflow: visible; }
+          .dash-right { height: auto; overflow: visible; }
+        }
         .dash-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 32px 5px; background-color: transparent; flex-shrink: 0; flex-wrap: wrap; gap: 10px; }
         .dash-breadcrumb { font-weight: 600; font-size: 18px; color: #5F5C5C; white-space: nowrap; }
         .dash-actions { display: flex; align-items: center; gap: 10px; flex-wrap: nowrap; }
@@ -157,9 +161,27 @@ export default function Dashboard() {
           .dash-tabs { gap: 8px; padding: 20px 24px 16px; } .dash-tab { padding: 10px 16px; min-width: 80px; }
           .dash-list { padding: 8px 24px; } .prop-img { width: 90px; height: 70px; } .dash-add-btn { font-size: 11px; }
         }
+        @media (max-width: 639px) {
+          /* Mobile: bottom nav is visible, add padding so content doesn't hide behind it */
+          .dash-root     { padding-bottom: 64px; }
+          .dash-header   { padding: 14px 16px 5px; }
+          .dash-divider  { margin: 8px 14px; }
+          .dash-card     { margin: 0 12px 16px; border-radius: 12px; }
+          .dash-tabs     { gap: 4px; padding: 10px 8px; }
+          .dash-tab      { padding: 7px 8px; min-width: 52px; }
+          .dash-tab-label { font-size: 10px; }
+          .dash-list     { padding: 4px 12px; }
+          .prop-card     { gap: 8px; }
+          .prop-img      { width: 64px; height: 52px; border-radius: 8px; }
+          .prop-right    { gap: 4px; }
+          .dash-breadcrumb { font-size: 14px; }
+          .dash-add-btn span.add-label { display: none; }
+          .dash-pagination { padding: 8px 12px; gap: 4px; }
+        }
+
         @media (max-width: 479px) {
-          .dash-breadcrumb { font-size: 14px; } .dash-add-btn span.add-label { display: none; }
-          .prop-card { gap: 8px; } .prop-img { width: 64px; height: 52px; border-radius: 8px; } .prop-right { gap: 4px; }
+          .prop-title    { font-size: 13px; }
+          .prop-rent-value { font-size: 12px; }
         }
       `}</style>
 

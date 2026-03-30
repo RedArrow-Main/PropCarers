@@ -63,181 +63,99 @@ export default function PropertyDetailPage() {
       <Sidebar firstName="Muhammad" lastName="Jamal" />
 
       {/* Main Content */}
-      <div className="flex flex-col flex-1 overflow-hidden">
+      <div className="flex flex-col flex-1 overflow-hidden" style={{ minWidth: 0 }}>
 
         {/* ── Header ── */}
-        {/* 📐 ADJUST: px-{n} = left/right padding | py-{n} = top/bottom padding */}
-        <div
-          className="flex items-center justify-between px-30 py-3"
-          style={{ backgroundColor: "#F5F5F5", flexShrink: 0 }}
-        >
-          {/* Breadcrumb â€” matches Figma: "Dashboard > My Properties" */}
-          <div
-            className="flex items-center gap-1"
-            style={{ fontSize: "20px", color: "#444", fontWeight: 600, fontFamily: "var(--font-josefin-sans), sans-serif" }}
-          >
+        <style>{`
+          .pd-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 60px 10px; background-color: #F5F5F5; flex-shrink: 0; flex-wrap: wrap; gap: 8px; }
+          .pd-breadcrumb { font-size: 18px; color: #444; font-weight: 600; font-family: var(--font-josefin-sans), sans-serif; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+          .pd-actions { display: flex; align-items: center; gap: 10px; flex-wrap: nowrap; }
+          .pd-add-btn { display: flex; align-items: center; gap: 6px; background-color: #1B4587; color: #fff; border: none; border-radius: 8px; padding: 6px 14px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: var(--font-josefin-sans), sans-serif; white-space: nowrap; }
+          .pd-icon-btn { width: 36px; height: 36px; background-color: #fff; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.10); cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+          .pd-divider { height: 2px; background-color: #E0E0E0; margin: 0 60px; flex-shrink: 0; }
+          .pd-outer { flex: 1; overflow-y: auto; padding: 20px 20px 24px; display: flex; flex-direction: column; align-items: center; }
+          .pd-white-card { background-color: #fff; border-radius: 16px; padding: 20px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); width: 100%; max-width: 900px; box-sizing: border-box; overflow: hidden; position: relative; flex-shrink: 0; }
+          .pd-top-btns { display: flex; justify-content: space-evenly; align-items: center; margin-bottom: 20px; gap: 8px; flex-wrap: wrap; }
+          .pd-top-btn { height: 29px; border-radius: 5px; background: linear-gradient(180deg, #FFA27A 6.9%, #E86831 100%); box-shadow: 0px 2px 4px 0px #00000040; border: none; color: #fff; font-size: 11px; font-weight: 700; cursor: pointer; font-family: var(--font-josefin-sans), sans-serif; padding: 0 14px; white-space: nowrap; }
+          .pd-content-row { display: flex; gap: 28px; align-items: flex-start; }
+          .pd-overview-text { width: 100%; font-family: Montserrat, sans-serif; font-weight: 400; font-size: 14px; line-height: 20px; letter-spacing: 0.05em; text-align: justify; color: #555; margin: 0 0 16px 0; }
+          .pd-bottom-row { display: flex; gap: 20px; flex-wrap: wrap; }
+          .pd-blue-card { flex: 1; min-width: 220px; background-color: #1B3F7E; border-radius: 15px; padding: 20px 18px; display: flex; flex-direction: column; align-items: center; gap: 14px; box-sizing: border-box; }
+          .pd-orange-card { flex: 2; min-width: 240px; background-color: #FE7A42; border-radius: 4px; padding: 20px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; }
+          .pd-divider-inner { border-top: 1px solid #E0E0E0; margin: 20px 0; }
+
+          @media (max-width: 639px) {
+            .pd-header    { padding: 12px 16px 8px; }
+            .pd-breadcrumb { font-size: 14px; }
+            .pd-add-btn span.add-label { display: none; }
+            .pd-divider   { margin: 0 14px; }
+            .pd-outer     { padding: 14px 12px 80px; }
+            .pd-white-card { padding: 14px 14px; border-radius: 12px; }
+            .pd-content-row { flex-direction: column; gap: 16px; }
+            .pd-top-btns  { gap: 6px; margin-bottom: 14px; }
+            .pd-top-btn   { font-size: 10px; padding: 0 10px; height: 26px; }
+            .pd-bottom-row { flex-direction: column; gap: 14px; }
+            .pd-blue-card  { min-width: unset; width: 100%; flex-direction: row; flex-wrap: wrap; gap: 10px; align-items: flex-start; padding: 14px; border-radius: 12px; }
+            .pd-orange-card { min-width: unset; width: 100%; }
+          }
+
+          @media (min-width: 640px) and (max-width: 1023px) {
+            .pd-header    { padding: 14px 24px 10px; }
+            .pd-divider   { margin: 0 24px; }
+            .pd-outer     { padding: 20px 16px 24px; }
+          }
+        `}</style>
+
+        <div className="pd-header">
+          <div className="pd-breadcrumb">
             <Link href="/" style={{ color: "#444", textDecoration: "none" }}>Dashboard</Link>
-            <span style={{ color: "#444", margin: "7px 4px" }}>&gt;</span>
+            <span style={{ color: "#444", margin: "0 4px" }}>&gt;</span>
             <Link href="/dashboard" style={{ color: "#444", textDecoration: "none" }}>My Properties</Link>
           </div>
-
-          {/* Right side actions */}
-          <div className="flex items-center gap-3">
-            {/* Add New Property */}
-            <button
-              className="flex items-center gap-2"
-              style={{
-                backgroundColor: "#1B4587",
-                color: "#fff",
-                border: "none",
-                borderRadius: "8px",
-                padding: "6px 14px",
-                fontSize: "13px",
-                fontWeight: 600,
-                cursor: "pointer",
-                fontFamily: "var(--font-josefin-sans), sans-serif",
-              }}
-            >
+          <div className="pd-actions">
+            <button className="pd-add-btn">
               <FaPlus size={11} />
-              Add New Property
+              <span className="add-label">Add New Property</span>
             </button>
-
-            {/* Bell */}
-            <div
-              style={{
-                width: "36px", height: "36px",
-                backgroundColor: "#fff",
-                borderRadius: "50%",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
-                cursor: "pointer",
-                position: "relative",
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}
-            >
+            <div className="pd-icon-btn">
               <MdNotifications size={20} color="#FE7A42" />
-              <span
-                style={{
-                  position: "absolute", top: "6px", right: "6px",
-                  width: "8px", height: "8px",
-                  backgroundColor: "#FE7A42",
-                  borderRadius: "50%",
-                  border: "2px solid #fff",
-                }}
-              />
+              <span style={{ position: "absolute", top: "6px", right: "6px", width: "8px", height: "8px", backgroundColor: "#FE7A42", borderRadius: "50%", border: "2px solid #fff" }} />
             </div>
-
-            {/* Logout */}
-            <div
-              style={{
-                width: "36px", height: "36px",
-                backgroundColor: "#fff",
-                borderRadius: "50%",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
-                cursor: "pointer",
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}
-            >
+            <div className="pd-icon-btn">
               <BiLogOut size={18} color="#FE7A42" />
             </div>
           </div>
         </div>
 
         {/* Thin divider */}
-        {/* 📐 ADJUST: margin "0 Xpx" = left/right indent of divider line | height = thickness */}
-        <div style={{ height: "2px", backgroundColor: "#E0E0E0", margin: "-8px 120px", flexShrink: 0 }} />
+        <div className="pd-divider" />
 
-        {/* ═══════════════════════════════════════════════════════
-            📐 SIZE CONTROL VARIABLES — edit these to resize things
-            ═══════════════════════════════════════════════════════
-
-            OUTER AREA (grey background padding around white card):
-              outerPadding: "top leftRight bottom"
-
-            WHITE CARD:
-              whiteCardMaxWidth  — max width of the white card  (e.g. "820px", "100%")
-              whiteCardPadding   — inner breathing room          (e.g. "20px 28px")
-
-            IMAGE:
-              imageWidth / imageHeight — size of the property photo
-
-            BLUE CARD (Current Status):
-              blueCardWidth      — fixed width of blue card      (e.g. "200px")
-
-            ORANGE CARD (Summary):
-              orangeCardWidth    — fixed width of orange card    (e.g. "400px")
-              chartHeight        — height of the bar chart       (e.g. "120px")
-        ═══════════════════════════════════════════════════════ */}
-
-        <div className="flex-1 overflow-y-auto" style={{ padding: "35px 60px 24px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div className="pd-outer">
 
           {/* ── Big White Card ── */}
-          {/*
-            ╔══════════════════════════════════════════════╗
-            ║  📐 WHITE CARD SIZE — EDIT THESE VALUES      ║
-            ║  width  = controls the WIDTH  of the card    ║
-            ║  height = controls the HEIGHT of the card    ║
-            ╚══════════════════════════════════════════════╝
-          */}
-          <div style={{
-            backgroundColor: "#fff",
-            borderRadius: "16px",
-            padding: "20px 24px",
-            boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
-            width: "900px",    /* ← 📐 CARD WIDTH:  change this number */
-            height: "750px",   /* ← 📐 CARD HEIGHT: change this number */
-            overflow: "hidden",
-            position: "relative",
-            flexShrink: 0,
-            boxSizing: "border-box",
-          }}>
+          <div className="pd-white-card">
 
-            {/* ── 4 Buttons Row — centered with equal gaps ── */}
-            <div style={{
-              display: "flex",
-              justifyContent: "space-evenly",
-              alignItems: "center",
-              marginBottom: "24px",
-            }}>
+            {/* ── 4 Buttons Row ── */}
+            <div className="pd-top-btns">
               {["View Contract", "Rental History", "Maintenance History", "Tenant Agreement"].map((label) => (
-                <button key={label} style={{
-                  width: "120px",
-                  height: "29px",
-                  borderRadius: "5px",
-                  background: "linear-gradient(180deg, #FFA27A 6.9%, #E86831 100%)",
-                  boxShadow: "0px 2px 4px 0px #00000040",
-                  backdropFilter: "blur(4px)",
-                  border: "none",
-                  color: "#fff",
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  fontFamily: "var(--font-josefin-sans), sans-serif",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  lineHeight: 1,
-                  flexShrink: 0,
-                }}>
-                  {label}
-                </button>
+                <button key={label} className="pd-top-btn">{label}</button>
               ))}
             </div>
 
             {/* ── Content Row: Image + Overview + Features ── */}
-            <div style={{ display: "flex", gap: "28px", alignItems: "flex-start" }}>
+            <div className="pd-content-row">
 
               {/* ── Image Carousel ── */}
-              <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
+              <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", width: "100%", maxWidth: "220px" }}>
                 {/* Image Frame */}
                 <div style={{
-                  width: "220px",
-                  height: "230px",
+                  width: "100%",
+                  aspectRatio: "220/230",
                   borderRadius: "12px",
                   overflow: "hidden",
                   position: "relative",
                   backgroundColor: "#eee",
                   boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
-                  left:"20px"
                 }}>
                   <Image
                     src={images[imgIdx]}
@@ -298,7 +216,7 @@ export default function PropertyDetailPage() {
               </div>
 
               {/* ── Property Overview + Features ── */}
-              <div style={{ flex: 1, paddingLeft: "20px" }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
                 {/* Title */}
                 <h2 style={{
                   fontSize: "18px", fontWeight: 700, color: "#222",
@@ -308,18 +226,7 @@ export default function PropertyDetailPage() {
                 </h2>
 
                 {/* Overview text */}
-                <p style={{
-                  width: "506px",
-                  fontFamily: "Montserrat, sans-serif",
-                  fontWeight: 400,
-                  fontStyle: "normal",
-                  fontSize: "14px",
-                  lineHeight: "20px",
-                  letterSpacing: "0.05em",
-                  textAlign: "justify",
-                  color: "#555",
-                  margin: "0 0 16px 0",
-                }}>
+                <p className="pd-overview-text">
                   {detail.overview}
                 </p>
 
@@ -357,30 +264,13 @@ export default function PropertyDetailPage() {
             </div>
 
             {/* ── Divider inside white card ── */}
-            <div style={{
-              width: "703px",
-              height: "0px",
-              borderTop: "1px solid #E0E0E0",
-              margin: "24px 0",
-            }} />
+            <div className="pd-divider-inner" />
 
             {/* ── Blue Card + Orange Summary Card (inside white card) ── */}
-            <div style={{ display: "flex", gap: "20px" }}>
+            <div className="pd-bottom-row">
 
             {/* ── Blue Current Status Card ── */}
-            <div style={{
-              width: "276px",
-              height: "318px",
-              flexShrink: 0,
-              backgroundColor: "#1B3F7E",
-              borderRadius: "15px",
-              padding: "20px 18px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "14px",
-              boxSizing: "border-box",
-            }}>
+            <div className="pd-blue-card">
               {/* Title */}
               <p style={{
                 color: "#fff",
@@ -461,18 +351,7 @@ export default function PropertyDetailPage() {
             </div>
 
             {/* ── Orange Summary / Bar Chart Card ── */}
-            <div style={{
-              width: "492px",
-              height: "321px",
-              flexShrink: 0,
-              backgroundColor: "#FE7A42",
-              borderRadius: "4px",
-              padding: "20px 24px",
-              boxSizing: "border-box",
-              display: "flex",
-              flexDirection: "column",
-              gap: "12px",
-            }}>
+            <div className="pd-orange-card">
               {/* Title */}
               <p style={{
                 color: "#fff",

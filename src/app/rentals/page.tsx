@@ -266,6 +266,23 @@ export default function RentalsPage() {
           font-family: var(--font-josefin-sans), sans-serif;
         }
 
+        @media (max-width: 639px) {
+          .rent-root      { height: auto; min-height: 100vh; overflow: visible; padding-bottom: 64px; }
+          .rent-right     { height: auto; overflow: visible; }
+          .rent-header    { padding: 14px 16px 5px; }
+          .rent-breadcrumb { font-size: 14px; white-space: normal; }
+          .rent-divider   { margin: 8px 14px; }
+          .rent-card      { margin: 0 12px 16px; border-radius: 12px; }
+          .rent-tabs      { gap: 4px; padding: 10px 8px; }
+          .rent-tab       { padding: 7px 8px; min-width: 52px; }
+          .rent-tab-label { font-size: 10px; }
+          .rent-list      { padding: 4px 12px; }
+          .rent-prop-img  { width: 64px; height: 52px; border-radius: 8px; }
+          .rent-prop-title { font-size: 13px; }
+          .rent-prop-addr-text { font-size: 10px; }
+          .rent-report-btn { width: 90px; font-size: 9px; }
+        }
+
         @media (min-width: 640px) {
           .rent-header    { padding: 16px 40px 5px; }
           .rent-card      { margin: 0 44px 44px; }

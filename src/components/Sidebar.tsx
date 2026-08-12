@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
   MdDashboard, MdApartment, MdHandyman,
@@ -57,7 +57,6 @@ export default function Sidebar({ firstName, lastName, userAvatar }: SidebarProp
   const pathname = usePathname();
   const [moreOpen, setMoreOpen] = useState(false);
   const { logout } = useAuth();
-  const router = useRouter();
 
   const isActiveHref = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
@@ -459,7 +458,7 @@ export default function Sidebar({ firstName, lastName, userAvatar }: SidebarProp
         {/* Footer */}
         <div style={{ padding: "10px 16px 14px", textAlign: "center", borderTop: "1px solid #E8E8E8", flexShrink: 0 }}>
           <button
-            onClick={async () => { await logout(); router.push("/"); }}
+            onClick={() => { logout(); }}
             style={{
               display: "inline-flex", alignItems: "center", gap: "6px",
               background: "#FE7A42", color: "#FFFFFF", border: "none",

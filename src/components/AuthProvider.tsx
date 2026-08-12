@@ -65,10 +65,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 
   const logout = useCallback(async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
+    try {
+      await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' });
+    } catch {
+      /* ignore network errors – we clear client state regardless */
+    }
     setUser(null);
-    router.push('/');
-  }, [router]);
+    window.location.assign('/');
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, loading, login, logout, refresh }}>

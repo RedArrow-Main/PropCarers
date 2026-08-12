@@ -13,7 +13,7 @@ const PUBLIC_PATHS = [
   '/submit-issue',
 ];
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Let API routes and static assets pass through (API handles its own auth)

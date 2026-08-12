@@ -1,20 +1,36 @@
+-- Clean slate (safe to re-run)
+DROP TABLE IF EXISTS "User" CASCADE;
+DROP TABLE IF EXISTS "Property" CASCADE;
+DROP TABLE IF EXISTS "RentalTransaction" CASCADE;
+DROP TABLE IF EXISTS "MaintenanceTransaction" CASCADE;
+DROP TABLE IF EXISTS "UtilityBill" CASCADE;
+DROP TABLE IF EXISTS "Agreement" CASCADE;
+DROP TABLE IF EXISTS "Nominee" CASCADE;
+DROP TABLE IF EXISTS "BankAccount" CASCADE;
+DROP TABLE IF EXISTS "Issue" CASCADE;
+DROP TABLE IF EXISTS "FinanceRecord" CASCADE;
+DROP TYPE IF EXISTS "Role" CASCADE;
+DROP TYPE IF EXISTS "RentalStatus" CASCADE;
+DROP TYPE IF EXISTS "WorkStatus" CASCADE;
+DROP TYPE IF EXISTS "BillStatus" CASCADE;
+
 -- CreateSchema
 CREATE SCHEMA IF NOT EXISTS "public";
 
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('OWNER', 'TENANT', 'ADMIN');
+CREATE TYPE IF NOT EXISTS "Role" AS ENUM ('OWNER', 'TENANT', 'ADMIN');
 
 -- CreateEnum
-CREATE TYPE "RentalStatus" AS ENUM ('RENTED', 'VACANT', 'MAINTENANCE');
+CREATE TYPE IF NOT EXISTS "RentalStatus" AS ENUM ('RENTED', 'VACANT', 'MAINTENANCE');
 
 -- CreateEnum
-CREATE TYPE "WorkStatus" AS ENUM ('Completed', 'UnComplete', 'InProgress');
+CREATE TYPE IF NOT EXISTS "WorkStatus" AS ENUM ('Completed', 'UnComplete', 'InProgress');
 
 -- CreateEnum
-CREATE TYPE "BillStatus" AS ENUM ('Paid', 'UnPaid');
+CREATE TYPE IF NOT EXISTS "BillStatus" AS ENUM ('Paid', 'UnPaid');
 
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE IF NOT EXISTS "User" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "username" TEXT NOT NULL,
@@ -34,7 +50,7 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
-CREATE TABLE "Nominee" (
+CREATE TABLE IF NOT EXISTS "Nominee" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "name" TEXT,
@@ -50,7 +66,7 @@ CREATE TABLE "Nominee" (
 );
 
 -- CreateTable
-CREATE TABLE "BankAccount" (
+CREATE TABLE IF NOT EXISTS "BankAccount" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "bank" TEXT,
@@ -63,7 +79,7 @@ CREATE TABLE "BankAccount" (
 );
 
 -- CreateTable
-CREATE TABLE "Property" (
+CREATE TABLE IF NOT EXISTS "Property" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "address" TEXT NOT NULL,
@@ -79,7 +95,7 @@ CREATE TABLE "Property" (
 );
 
 -- CreateTable
-CREATE TABLE "RentalTransaction" (
+CREATE TABLE IF NOT EXISTS "RentalTransaction" (
     "id" SERIAL NOT NULL,
     "propertyId" INTEGER NOT NULL,
     "invoice" TEXT NOT NULL,
@@ -93,7 +109,7 @@ CREATE TABLE "RentalTransaction" (
 );
 
 -- CreateTable
-CREATE TABLE "MaintenanceTransaction" (
+CREATE TABLE IF NOT EXISTS "MaintenanceTransaction" (
     "id" SERIAL NOT NULL,
     "propertyId" INTEGER NOT NULL,
     "invoice" TEXT NOT NULL,
@@ -107,7 +123,7 @@ CREATE TABLE "MaintenanceTransaction" (
 );
 
 -- CreateTable
-CREATE TABLE "UtilityBill" (
+CREATE TABLE IF NOT EXISTS "UtilityBill" (
     "id" SERIAL NOT NULL,
     "propertyId" INTEGER NOT NULL,
     "invoice" TEXT NOT NULL,
@@ -120,7 +136,7 @@ CREATE TABLE "UtilityBill" (
 );
 
 -- CreateTable
-CREATE TABLE "Agreement" (
+CREATE TABLE IF NOT EXISTS "Agreement" (
     "id" SERIAL NOT NULL,
     "propertyId" INTEGER NOT NULL,
     "partyName" TEXT,
@@ -135,7 +151,7 @@ CREATE TABLE "Agreement" (
 );
 
 -- CreateTable
-CREATE TABLE "FinanceRecord" (
+CREATE TABLE IF NOT EXISTS "FinanceRecord" (
     "id" SERIAL NOT NULL,
     "propertyId" INTEGER,
     "type" TEXT NOT NULL,
@@ -147,7 +163,7 @@ CREATE TABLE "FinanceRecord" (
 );
 
 -- CreateTable
-CREATE TABLE "Issue" (
+CREATE TABLE IF NOT EXISTS "Issue" (
     "id" SERIAL NOT NULL,
     "userId" TEXT,
     "subject" TEXT NOT NULL,

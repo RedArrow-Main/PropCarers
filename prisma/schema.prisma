@@ -1,0 +1,164 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  OWNER
+  TENANT
+  ADMIN
+}
+
+enum RentalStatus {
+  RENTED
+  VACANT
+  MAINTENANCE
+}
+
+enum WorkStatus {
+  Completed
+  UnComplete
+  InProgress
+}
+
+enum BillStatus {
+  Paid
+  UnPaid
+}
+
+model User {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  username     String         @unique
+  passwordHash String
+  firstName    String?
+  lastName     String?
+  contact      String?
+  cnic         String?
+  address      String?
+  avatarUrl    String?
+  country      String?
+  dob          String?
+  role         Role?          @default(OWNER)
+  createdAt    DateTime       @default(now())
+  nominee      Nominee?
+  bankAccounts BankAccount[]
+  properties   Property[]
+  issues       Issue[]
+}
+
+model Nominee {
+  id          String  @id @default(cuid())
+  userId      String  @unique
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String?
+  fatherName  String?
+  relation    String?
+  nationality String?
+  idCard      String?
+  contact     String?
+  email       String?
+  address     String?
+}
+
+model BankAccount {
+  id            String  @id @default(cuid())
+  userId        String
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bank          String?
+  branchCode    String?
+  accountNumber String?
+  iban          String?
+  status        String  @default("Active")
+}
+
+model Property {
+  id          Int                @id @default(autoincrement())
+  title       String
+  address     String
+  monthlyRent Int                @default(0)
+  image       String?
+  category    String
+  status      RentalStatus      @default(VACANT)
+  ownerId     String?
+  owner       User?              @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  detail      Json?
+  createdAt   DateTime          @default(now())
+  rentalTransactions        RentalTransaction[]
+  maintenanceTransactions  MaintenanceTransaction[]
+  utilityBills             UtilityBill[]
+  agreements              Agreement[]
+  financeRecords          FinanceRecord[]
+}
+
+model RentalTransaction {
+  id            Int       @id @default(autoincrement())
+  propertyId    Int
+  property      Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  invoice       String
+  month         String
+  bankAccount   String?
+  totalRent     Int
+  serviceCharges Int
+  deposited     Int
+}
+
+model MaintenanceTransaction {
+  id           Int        @id @default(autoincrement())
+  propertyId   Int
+  property     Property   @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  invoice      String
+  month        String
+  description  String?
+  workStatus   WorkStatus @default(InProgress)
+  billStatus   BillStatus @default(UnPaid)
+  billAmount   Int        @default(0)
+}
+
+model UtilityBill {
+  id         Int        @id @default(autoincrement())
+  propertyId Int
+  property   Property   @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  invoice    String
+  month      String
+  type       String?
+  amount     Int        @default(0)
+  status     BillStatus @default(UnPaid)
+}
+
+model Agreement {
+  id         Int      @id @default(autoincrement())
+  propertyId Int
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  partyName  String?
+  type       String?
+  startDate  String?
+  endDate    String?
+  status     String?
+  rent       Int?
+  documentUrl String?
+}
+
+model FinanceRecord {
+  id         Int      @id @default(autoincrement())
+  propertyId Int?
+  property   Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+  type       String // "income" | "expense"
+  category   String
+  amount     Int
+  date       String
+}
+
+model Issue {
+  id          Int      @id @default(autoincrement())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  subject     String
+  description String?
+  status      String   @default("Open")
+  createdAt   DateTime @default(now())
+}

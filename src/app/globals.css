@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+:root {
+  --propcarers-orange: #FE7A42;
+  --propcarers-blue: #2356A6;
+  --text-gray: #686868;
+  --bg-cream: #FAF9F6;
+}
+
+body {
+  font-family: var(--font-josefin-sans), sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-cream);
+}
